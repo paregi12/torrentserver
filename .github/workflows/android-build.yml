@@ -14,7 +14,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23'
+          go-version: '1.25' # gomobile requires 1.25+ for latest versions
           cache-dependency-path: go.sum
 
       - name: Set up JDK
@@ -23,8 +23,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Android NDK
+      - name: Setup Android SDK & NDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: "ndk;26.1.10909125" # Stable NDK version for Go
 
       - name: Install gomobile
         run: |
@@ -33,9 +35,10 @@ jobs:
 
       - name: Build AAR
         run: |
-          # The go.mod is in the root, and bindings are in ./bindings
-          # Module name is 'server'
-          gomobile bind -v -target=android -o torrentserver.aar ./bindings
+          # Set NDK path for gomobile
+          export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/26.1.10909125
+          # Build with API 21+ to match modern NDK support
+          gomobile bind -v -target=android -androidapi 21 -o torrentserver.aar ./bindings
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
