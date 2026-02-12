@@ -1,4 +1,4 @@
-package torrServer
+package nuvioServer
 
 import (
 	server "server"
