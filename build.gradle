@@ -1,12 +1,12 @@
 apply plugin: 'maven-publish'
 
-group = 'com.github.recloudstream'
+group = 'com.nuvio'
 version = '1.0.1'
 
 publishing {
     publications {
         aar(MavenPublication) {
-            artifactId = 'torrentserver-cloudstream'
+            artifactId = 'torrentserver-nuvio'
             artifact("./build/$version/torrserver.aar") 
         }
     }
@@ -32,4 +32,3 @@ tasks.register("copyAarToVersionDir",Copy) {
     from("torrserver.aar")
     into("$buildDir/$version")
 }
-
