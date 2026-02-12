@@ -14,7 +14,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.24'
+          go-version: '1.23'
           cache-dependency-path: go.sum
 
       - name: Set up JDK
@@ -33,6 +33,8 @@ jobs:
 
       - name: Build AAR
         run: |
+          # The go.mod is in the root, and bindings are in ./bindings
+          # Module name is 'server'
           gomobile bind -v -target=android -o torrentserver.aar ./bindings
 
       - name: Upload Artifact
